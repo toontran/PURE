@@ -16,13 +16,15 @@ from utils.helper import load_config, get_layer_names_model
 def get_args():
     parser = ArgumentParser()
     parser.add_argument("--config_file", default="configs/imagenet/resnet101_timm.yaml")
+    parser.add_argument('--split', type=str, default="test")
+    parser.add_argument('--ckpt_path', type=str, default=None)
     return parser.parse_args()
 
 
-def main(model_name, ckpt_path, dataset_name, data_path, batch_size, fname):
+def main(model_name, ckpt_path, dataset_name, data_path, batch_size, fname, split):
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-    SPLIT = "test"
+    SPLIT = split
     dataset = get_dataset(dataset_name)(data_path=data_path,
                                         preprocessing=False,
                                         split=SPLIT, )
@@ -40,6 +42,8 @@ def main(model_name, ckpt_path, dataset_name, data_path, batch_size, fname):
     attribution = CondAttribution(model)
 
     os.makedirs(f"crp_files", exist_ok=True)
+    
+#     import pdb;pdb.set_trace()
 
     fv = FeatureVisualization(attribution, dataset, layer_map, preprocess_fn=dataset.preprocessing,
                               path=f"crp_files/{fname}_{SPLIT}", max_target="max", abs_norm=False)
@@ -59,7 +63,8 @@ if __name__ == "__main__":
 
     data_path = config.get('data_path', None)
     ckpt_path = config.get('ckpt_path', None)
+    split = args.split
 
     fname = f"{model_name}_{dataset_name}"
 
-    main(model_name, ckpt_path, dataset_name, data_path, batch_size, fname)
+    main(model_name, ckpt_path, dataset_name, data_path, batch_size, fname, split)

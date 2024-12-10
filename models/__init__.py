@@ -1,4 +1,6 @@
 import torch
+# from models.timm_resnet_detection import get_resnet_timm, get_resnet50_timm, get_resnet34_timm, get_resnet101_timm, \
+#     get_resnet_canonizer
 from models.timm_resnet import get_resnet_timm, get_resnet50_timm, get_resnet34_timm, get_resnet101_timm, \
     get_resnet_canonizer
 

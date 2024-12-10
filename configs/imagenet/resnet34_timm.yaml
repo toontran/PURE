@@ -1,6 +1,6 @@
-batch_size: 50
+batch_size: 1
 ckpt_path: ''
-data_path: IMAGENET_PATH
+data_path: ./tiny-imagenet-200
 dataset_name: imagenet
 device: cuda
 model_name: resnet34_timm
